@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<title>LGF Borang KT1 - Hotel Neo+ Penang</title>
+<meta name="description" content="Borang KT 1 - Jumlah Kutipan Bulanan Fi Kerajaan Tempatan Negeri Pulau Pinang - Hotel Neo+ Penang">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- SheetJS for Excel export -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  /* ── Reset & Page ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 15mm 8mm 15mm;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.2;
+    color: #000;
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    padding: 10mm 18mm 8mm 18mm;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .page { box-shadow: none; padding: 0; width: 100%; min-height: auto; }
+    .no-print { display: none !important; }
+    input[type="text"], input[type="number"], select {
+      border: none !important;
+      background: transparent !important;
+      outline: none !important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    select { padding-right: 0 !important; }
+    .checkbox { cursor: default; }
+    .paste-btn { display: none !important; }
+  }
+
+  /* ── Header ── */
+  .borang-label {
+    text-align: right;
+    font-style: italic;
+    font-size: 9pt;
+    margin-bottom: 6px;
+  }
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12.5pt;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  /* ── Hotel info ── */
+  .info-section { margin-bottom: 3px; }
+  .info-section .row {
+    margin-bottom: 2px;
+    font-size: 9.5pt;
+  }
+
+  /* ── Star rating ── */
+  .star-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 0px;
+    flex-wrap: wrap;
+  }
+  .star-label {
+    font-size: 9.5pt;
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+  .star-options {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .star-option {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9.5pt;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .checkbox {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .checkbox.checked::after {
+    content: '✓';
+    font-weight: bold;
+    font-size: 13px;
+  }
+  .tandakan {
+    font-size: 8pt;
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  /* ── Bulan + Tables ── */
+  .tables-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 5px;
+  }
+  .table-block { flex: 1; max-width: 48%; }
+  .bulan-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 3px;
+    font-size: 9.5pt;
+  }
+  .bulan-header select {
+    border: none;
+    border-bottom: 1px dotted #000;
+    font-size: 9.5pt;
+    font-family: inherit;
+    padding: 0 2px;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+  }
+  table.data-table th,
+  table.data-table td {
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.5px 3px;
+    height: 15.5px;
+  }
+  table.data-table th {
+    font-weight: bold;
+    font-size: 9pt;
+    padding: 2px 3px;
+    height: auto;
+  }
+  table.data-table td:first-child {
+    width: 38%;
+    font-size: 9pt;
+  }
+  table.data-table td:last-child { width: 62%; }
+  table.data-table input[type="number"] {
+    width: 100%;
+    border: none;
+    text-align: center;
+    font-family: inherit;
+    font-size: 9pt;
+    padding: 0;
+    background: transparent;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  table.data-table input[type="number"]::-webkit-outer-spin-button,
+  table.data-table input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  table.data-table .jumlah-label {
+    font-weight: bold;
+    font-size: 9pt;
+  }
+  table.data-table .jumlah-val {
+    font-weight: bold;
+    font-size: 9.5pt;
+  }
+
+  /* ── Paste button ── */
+  .paste-btn {
+    display: inline-block;
+    font-size: 8pt;
+    padding: 2px 8px;
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #1565c0;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .paste-btn:hover { background: #bbdefb; }
+
+  /* ── Summary boxes ── */
+  .summary-row {
+    display: flex;
+    border: 1px solid #000;
+    margin-bottom: 4px;
+  }
+  .summary-box {
+    flex: 1;
+    text-align: center;
+    padding: 3px 4px;
+    font-size: 9pt;
+  }
+  .summary-box:not(:last-child) { border-right: 1px solid #000; }
+  .summary-box .label {
+    font-size: 8.5pt;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .summary-box .value {
+    font-weight: bold;
+    font-size: 10pt;
+    min-height: 14px;
+  }
+  .summary-box.kadar-box { flex: 0.6; }
+
+  /* ── Kadar notes ── */
+  .kadar-notes {
+    margin-bottom: 5px;
+    font-size: 8pt;
+  }
+  .kadar-notes .kadar-title {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-bottom: 0;
+  }
+  .kadar-notes p { margin-bottom: 0; line-height: 1.3; }
+  .kadar-notes .potong { font-style: italic; }
+
+  /* ── Signatures ── */
+  .sig-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 4px;
+  }
+  .sig-block {
+    flex: 1;
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+  .sig-block .sig-title {
+    font-weight: bold;
+    margin-bottom: 1px;
+  }
+  .sig-block .date-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sig-block .date-input {
+    border: none;
+    border-bottom: 1px dotted #000;
+    font-family: inherit;
+    font-size: 9pt;
+    width: 90px;
+    background: transparent;
+    outline: none;
+    text-align: center;
+  }
+  .today-btn {
+    font-size: 7pt;
+    padding: 1px 5px;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: 2px;
+    cursor: pointer;
+    color: #2e7d32;
+  }
+  .today-btn:hover { background: #c8e6c9; }
+
+  /* ── Signature editable inputs ── */
+  .sig-input {
+    border: none;
+    border-bottom: 1px dotted #000;
+    font-family: inherit;
+    font-size: 9pt;
+    width: 150px;
+    background: transparent;
+    outline: none;
+    font-weight: bold;
+  }
+
+  /* ── Contact ── */
+  .contact {
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+  .toolbar button {
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    font-size: 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .toolbar button:hover { background: #1557b0; }
+  .toolbar button.clear-btn {
+    background: #e53935;
+  }
+  .toolbar button.clear-btn:hover { background: #c62828; }
+  .toolbar button.excel-btn {
+    background: #2e7d32;
+  }
+  .toolbar button.excel-btn:hover { background: #1b5e20; }
+  .toolbar button.import-btn {
+    background: #e65100;
+  }
+  .toolbar button.import-btn:hover { background: #bf360c; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #323232;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    max-width: 90%;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── Drop Zone ── */
+  .drop-zone {
+    border: 2px dashed #90caf9;
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    color: #1565c0;
+    font-size: 9pt;
+    background: #e3f2fd;
+    cursor: pointer;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .drop-zone.drag-over {
+    border-color: #1565c0;
+    background: #bbdefb;
+    box-shadow: 0 0 12px rgba(21,101,192,0.3);
+    transform: scale(1.02);
+  }
+  .drop-zone .drop-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .drop-zone .drop-text { font-weight: bold; font-size: 8.5pt; }
+  .drop-zone .drop-hint { font-size: 7.5pt; color: #5c8db8; margin-top: 1px; }
+
+  /* ── Help Popup ── */
+  .help-btn {
+    background: none;
+    border: 1px solid #ffcc80;
+    color: #e65100;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .help-btn:hover { background: #fff3e0; }
+  .help-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    justify-content: center;
+    align-items: center;
+  }
+  .help-overlay.show { display: flex; }
+  .help-popup {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    max-width: 460px;
+    width: 90%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    font-size: 9.5pt;
+    line-height: 1.6;
+    position: relative;
+  }
+  .help-popup h3 { margin: 0 0 10px; font-size: 11pt; color: #e65100; }
+  .help-popup ol { margin: 0 0 0 18px; padding: 0; }
+  .help-popup li { margin-bottom: 4px; }
+  .help-popup .step-highlight {
+    background: #fff8e1;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+  .help-popup .close-btn {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: none; border: none;
+    font-size: 18px; cursor: pointer; color: #999;
+  }
+  .help-popup .close-btn:hover { color: #333; }
+
+  /* ── DRR Cross-Check ── */
+  .drr-btn { background: #7b1fa2 !important; }
+  .drr-btn:hover { background: #6a1b9a !important; }
+  .crosscheck-panel {
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 8.5pt;
+    display: none;
+  }
+  .crosscheck-panel.show { display: block; }
+  .crosscheck-panel.match {
+    background: #e8f5e9;
+    border: 1px solid #66bb6a;
+  }
+  .crosscheck-panel.mismatch {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+  }
+  .crosscheck-panel .cc-title {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-bottom: 4px;
+  }
+  .crosscheck-panel.match .cc-title { color: #2e7d32; }
+  .crosscheck-panel.mismatch .cc-title { color: #c62828; }
+  .crosscheck-panel .cc-detail { margin: 2px 0; }
+
+  /* ── Warning Panel ── */
+  .warning-panel {
+    background: #fff3e0;
+    border: 1px solid #ff9800;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 8.5pt;
+    display: none;
+  }
+  .warning-panel.show { display: block; }
+  .warning-panel .warn-title {
+    font-weight: bold;
+    color: #e65100;
+    margin-bottom: 4px;
+    font-size: 9pt;
+  }
+  .warning-panel .warn-list {
+    margin: 0;
+    padding-left: 16px;
+    color: #bf360c;
+  }
+  .warning-panel .warn-list li { margin-bottom: 2px; }
+  .warning-panel .warn-summary {
+    margin-top: 4px;
+    font-weight: bold;
+    color: #e65100;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="import-btn" onclick="document.getElementById('importFile').click()">📥 Import Excel</button>
+  <button class="drr-btn" onclick="document.getElementById('importDRR').click()">🔍 DRR Cross-Check</button>
+  <button class="clear-btn" onclick="clearAll()">🗑️ Clear</button>
+  <button class="excel-btn" onclick="exportToExcel()">📊 Export Excel</button>
+  <button onclick="savePDF()">🖨️ Print / Save PDF</button>
+  <button class="help-btn" onclick="toggleHelp()">❓ Bantuan</button>
+</div>
+<!-- Hidden file inputs -->
+<input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcel(this)">
+<input type="file" id="importDRR" accept=".xlsx,.xls" style="display:none" onchange="importDRR(this)">
+
+<div class="toast" id="toast"></div>
+
+<!-- Warning panel for negative values -->
+<div class="warning-panel no-print" id="warningPanel">
+  <div class="warn-title">⚠️ Amaran: Nilai Negatif Dikesan (Contra / Reversal)</div>
+  <ul class="warn-list" id="warningList"></ul>
+  <div class="warn-summary" id="warningSummary"></div>
+</div>
+
+<!-- DRR Cross-Check Panel -->
+<div class="crosscheck-panel no-print" id="crosscheckPanel">
+  <div class="cc-title" id="ccTitle"></div>
+  <div class="cc-detail" id="ccDetail"></div>
+</div>
+
+<!-- Help Popup Overlay -->
+<div class="help-overlay" id="helpOverlay" onclick="if(event.target===this)toggleHelp()">
+  <div class="help-popup">
+    <span class="close-btn" onclick="toggleHelp()">&times;</span>
+    <h3 style="margin:0 0 10px;font-size:11pt;color:#e65100;">📋 Cara Mendapatkan Laporan dari Sentec PMS</h3>
+    <p style="font-weight:bold;margin:8px 0 4px;color:#1565c0;">Add On Tax Report:</p>
+    <ol style="margin:0 0 10px;padding-left:20px;">
+      <li>Buka <span class="step-highlight">pms.sentec.io</span> dan log masuk</li>
+      <li>Pergi ke tab <span class="step-highlight">Reports</span></li>
+      <li>Pilih <span class="step-highlight">Local Tax Report</span> → <span class="step-highlight">Add On Tax</span></li>
+      <li>Pilih <strong>Start Date</strong> dan <strong>End Date</strong> untuk tempoh 1 bulan penuh</li>
+      <li>Di bahagian <strong>Revenue Center</strong>, pilih <span class="step-highlight">Local Government Fee</span> sahaja — <em>untick</em> Tourism Tax</li>
+      <li>Klik <strong>Generate</strong> — laporan akan dibuka sebagai Google Sheet</li>
+      <li>Muat turun sebagai <span class="step-highlight">Excel (.xlsx)</span></li>
+      <li>Seret (drag) fail Excel ke kotak biru, atau klik butang <strong>📥 Import Excel</strong></li>
+    </ol>
+    <p style="font-weight:bold;margin:8px 0 4px;color:#7b1fa2;">DRR (Daily Revenue Report):</p>
+    <ol style="margin:0;padding-left:20px;">
+      <li>Buka <span class="step-highlight">pms.sentec.io</span> → tab <span class="step-highlight">Reports</span></li>
+      <li>Pilih <span class="step-highlight">Daily Revenue Report (DRR)</span></li>
+      <li>Pilih tarikh akhir bulan (cth: 30 Sept)</li>
+      <li>Muat turun sebagai <span class="step-highlight">Excel (.xlsx)</span></li>
+      <li>Klik butang <strong>🔍 DRR Cross-Check</strong> dan pilih fail DRR</li>
+    </ol>
+    <p style="margin:10px 0 0;font-size:8pt;color:#888;">DRR digunakan untuk semak silang (cross-check) jumlah Add On Tax.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Borang KT 1 -->
+  <div class="borang-label">Borang KT 1</div>
+
+  <!-- Title -->
+  <div class="title">
+    Jumlah Kutipan Bulanan Fi Kerajaan Tempatan<br>
+    Negeri Pulau Pinang Tahun <span id="yearDisplay">2026</span>
+  </div>
+
+  <!-- Hotel Info -->
+  <div class="info-section">
+    <div class="row">Nama Hotel/Hostel/Rumah Tumpangan : <strong>Hotel Neo+ Penang</strong></div>
+    <div class="row">Alamat : <strong>68, Jalan Gurdwara, 10300 Georgetown Penang.</strong></div>
+  </div>
+
+  <!-- Star Rating -->
+  <div class="star-row">
+    <span class="star-label">Taraf Bintang Hotel :</span>
+    <div class="star-options" id="starOptions">
+      <span class="star-option" data-star="1" onclick="selectStar(1)"><span class="checkbox"></span> 1 &amp; ke bawah</span>
+      <span class="star-option" data-star="2" onclick="selectStar(2)"><span class="checkbox"></span> 2</span>
+      <span class="star-option" data-star="3" onclick="selectStar(3)"><span class="checkbox checked"></span> 3</span>
+      <span class="star-option" data-star="4" onclick="selectStar(4)"><span class="checkbox"></span> 4</span>
+      <span class="star-option" data-star="5" onclick="selectStar(5)"><span class="checkbox"></span> 5</span>
+    </div>
+  </div>
+  <div class="tandakan">(Tandakan ✓ kotak berkenaan)</div>
+
+  <!-- Two Tables Side by Side -->
+  <div class="tables-wrapper">
+
+    <!-- LEFT TABLE -->
+    <div class="table-block">
+      <div class="drop-zone no-print" id="dropZone1" onclick="document.getElementById('importFile1').click()">
+        <span class="drop-icon">📥</span>
+        <span class="drop-text">Seret fail Add On Tax Report ke sini</span>
+        <span class="drop-hint">atau klik untuk pilih fail (.xlsx)</span>
+      </div>
+      <input type="file" id="importFile1" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcelToTable(this, 'table1')">
+      <div class="bulan-header">
+        <span>Bulan</span>
+        <select id="bulan1" onchange="recalc()"></select>
+        <span class="paste-btn no-print" onclick="pasteFromClipboard(1)" title="Paste data from Excel/Google Sheets">📋 Paste</span>
+      </div>
+      <table class="data-table" id="table1">
+        <thead>
+          <tr><th>Tarikh</th><th>Bil. Bilik<br>Dijual</th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="jumlah-label">Jumlah</td>
+            <td class="jumlah-val" id="jumlah1">0</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- RIGHT TABLE -->
+    <div class="table-block">
+      <div class="drop-zone no-print" id="dropZone2" onclick="document.getElementById('importFile2').click()">
+        <span class="drop-icon">📥</span>
+        <span class="drop-text">Seret fail Add On Tax Report ke sini</span>
+        <span class="drop-hint">atau klik untuk pilih fail (.xlsx)</span>
+      </div>
+      <input type="file" id="importFile2" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcelToTable(this, 'table2')">
+      <div class="bulan-header">
+        <span>Bulan</span>
+        <select id="bulan2" onchange="recalc()"></select>
+        <span class="paste-btn no-print" onclick="pasteFromClipboard(2)" title="Paste data from Excel/Google Sheets">📋 Paste</span>
+      </div>
+      <table class="data-table" id="table2">
+        <thead>
+          <tr><th>Tarikh</th><th>Bil. Bilik<br>Dijual</th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="jumlah-label">Jumlah</td>
+            <td class="jumlah-val" id="jumlah2">0</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Summary Boxes -->
+  <div class="summary-row">
+    <div class="summary-box">
+      <div class="label">Jumlah Bilik Dijual<br>(2 Bulan)</div>
+      <div class="value" id="totalBilik">0</div>
+    </div>
+    <div class="summary-box kadar-box">
+      <div class="label">Kadar*</div>
+      <div class="value">RM 2/ RM 3</div>
+    </div>
+    <div class="summary-box">
+      <div class="label">Jumlah Bilik X Kadar =<br>Jumlah Kutipan (RM)</div>
+      <div class="value" id="totalKutipan">0</div>
+    </div>
+  </div>
+
+  <!-- Kadar Notes -->
+  <div class="kadar-notes">
+    <div class="kadar-title">Kadar</div>
+    <p>* Hotel bertaraf 3 bintang dan ke bawah kadar RM2 sebilik semalam</p>
+    <p>* Hotel bertaraf 4 bintang dan ke atas kadar RM3 sebilik semalam</p>
+    <p class="potong">(Potong kadar yang tidak berkenaan)</p>
+  </div>
+
+  <!-- Signatures -->
+  <div class="sig-row">
+    <div class="sig-block">
+      <div class="sig-title">Disediakan oleh:</div>
+      <!-- ✏️ EDIT DEFAULT: Change the value="" below to update the default Nama & Jawatan for "Disediakan oleh" -->
+      <div>Nama : <input type="text" class="sig-input" id="sigNama1" value="Fafing Bin Khamis"></div>
+      <div>Jawatan : <input type="text" class="sig-input" id="sigJawatan1" value="Income Auditor"></div>
+      <div>Tarikh : <span class="date-field"><input type="text" class="date-input" id="date1" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDate(this)"><span class="today-btn no-print" onclick="setToday('date1')">Today</span></span></div>
+    </div>
+    <div class="sig-block">
+      <div class="sig-title">Disahkan oleh:</div>
+      <!-- ✏️ EDIT DEFAULT: Change the value="" below to update the default Nama & Jawatan for "Disahkan oleh" -->
+      <div>Nama : <input type="text" class="sig-input" id="sigNama2" value="Derrick Teh"></div>
+      <div>Jawatan : <input type="text" class="sig-input" id="sigJawatan2" value="Chief Accountant"></div>
+      <div>Tarikh : <span class="date-field"><input type="text" class="date-input" id="date2" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDate(this)"><span class="today-btn no-print" onclick="setToday('date2')">Today</span></span></div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact">
+    <div>Nama kakitangan hotel untuk dihubungi :</div>
+    <div>No. Telefon : 04-2551000</div>
+  </div>
+
+</div>
+
+<script>
+// ── Month names in Bahasa Malaysia ──
+const BULAN = [
+  'Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun',
+  'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'
+];
+
+// Current month (0-indexed)
+const now = new Date();
+const currentMonth = now.getMonth();
+const currentYear = now.getFullYear();
+
+// Set year in title
+document.getElementById('yearDisplay').textContent = currentYear;
+
+// Populate month dropdowns
+function populateMonthDropdowns() {
+  ['bulan1', 'bulan2'].forEach((id, idx) => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = '<option value="">-- Pilih Bulan --</option>';
+    BULAN.forEach((name, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+    // Default: left = current month, right = blank (user picks manually)
+    if (idx === 0) {
+      sel.value = currentMonth;
+    } else {
+      sel.value = ''; // Keep blank — user selects when needed
+    }
+  });
+}
+populateMonthDropdowns();
+
+// ── Star rating (radio behavior) ──
+let selectedStar = 3;
+
+function selectStar(n) {
+  selectedStar = n;
+  document.querySelectorAll('#starOptions .star-option').forEach(opt => {
+    const cb = opt.querySelector('.checkbox');
+    if (parseInt(opt.dataset.star) === n) {
+      cb.classList.add('checked');
+    } else {
+      cb.classList.remove('checked');
+    }
+  });
+  recalc();
+}
+
+// ── Build 31-day rows ──
+['table1', 'table2'].forEach(id => {
+  const tbody = document.querySelector('#' + id + ' tbody');
+  for (let d = 1; d <= 31; d++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + d + '</td><td><input type="number" min="0" max="196" data-table="' + id + '" oninput="validateAndRecalc(this)"></td>';
+    tbody.appendChild(tr);
+  }
+});
+
+// ── Validation: max 196 rooms, max 5 digits ──
+function validateAndRecalc(input) {
+  // Strip leading zeros and limit to 3 digits (max 196)
+  let val = input.value;
+  if (val.length > 3) {
+    input.value = val.slice(0, 3);
+  }
+  let num = parseInt(input.value);
+  if (num > 196) {
+    input.value = 196;
+  }
+  if (num < 0) {
+    input.value = 0;
+  }
+  recalc();
+}
+
+// ── English month names for PDF filename ──
+const BULAN_EN = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+// ── Recalculate totals ──
+function recalc() {
+  let s1 = 0, s2 = 0;
+  document.querySelectorAll('input[data-table="table1"]').forEach(i => { s1 += Number(i.value) || 0; });
+  document.querySelectorAll('input[data-table="table2"]').forEach(i => { s2 += Number(i.value) || 0; });
+  document.getElementById('jumlah1').textContent = s1;
+  document.getElementById('jumlah2').textContent = s2;
+  const total = s1 + s2;
+  document.getElementById('totalBilik').textContent = total;
+
+  // Kadar: RM2 for 3-star and below, RM3 for 4-star and above
+  // Visual stays "RM 2/ RM 3" to match original form, but calculation uses correct rate
+  const rate = selectedStar >= 4 ? 3 : 2;
+  document.getElementById('totalKutipan').textContent = total * rate;
+
+  // Update PDF filename based on selected left month
+  updateTitle();
+}
+
+// ── Dynamic page title for PDF filename ──
+// When saving as PDF, the browser uses document.title as the default filename
+function updateTitle() {
+  const sel1 = document.getElementById('bulan1');
+  const sel2 = document.getElementById('bulan2');
+  const m1 = sel1.value !== '' ? BULAN_EN[parseInt(sel1.value)] : '';
+  const m2 = sel2.value !== '' ? BULAN_EN[parseInt(sel2.value)] : '';
+  if (m1 && m2) {
+    document.title = 'LGF_' + m1 + '_' + m2;
+  } else if (m1) {
+    document.title = 'LGF_' + m1;
+  } else if (m2) {
+    document.title = 'LGF_' + m2;
+  } else {
+    document.title = 'LGF_Form';
+  }
+}
+
+recalc();
+
+// ── Paste from clipboard (Excel / Google Sheets) ──
+async function pasteFromClipboard(tableNum) {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text || !text.trim()) {
+      showToast('⚠️ Clipboard empty / Clipboard kosong. Copy data from Excel/Google Sheets first.');
+      return;
+    }
+    const values = parseClipboard(text);
+    if (values.length === 0) {
+      showToast('⚠️ No numeric data found / Tiada data nombor ditemui.');
+      return;
+    }
+    const inputs = document.querySelectorAll('input[data-table="table' + tableNum + '"]');
+    const count = Math.min(values.length, 31);
+    for (let i = 0; i < count; i++) {
+      inputs[i].value = values[i];
+    }
+    recalc();
+    showToast('✅ ' + count + ' days pasted / ' + count + ' hari data telah dipaste.');
+  } catch (err) {
+    showToast('⚠️ Cannot access clipboard / Tidak dapat access clipboard. Allow permission or use Ctrl+V.');
+  }
+}
+
+function parseClipboard(text) {
+  // Handle tab-separated (Excel horizontal), newline-separated (column), or mixed
+  const values = [];
+  // Split by newlines first, then tabs within each line
+  const lines = text.trim().split(/\r?\n/);
+  for (const line of lines) {
+    const cells = line.split(/\t/);
+    for (const cell of cells) {
+      const trimmed = cell.trim();
+      if (trimmed === '') continue;
+      const num = parseFloat(trimmed);
+      if (!isNaN(num) && num >= 0) {
+        values.push(Math.min(Math.round(num), 196));
+      }
+    }
+  }
+  return values;
+}
+
+// Also support Ctrl+V directly on the table inputs
+document.addEventListener('paste', function(e) {
+  const active = document.activeElement;
+  if (active && active.tagName === 'INPUT' && active.dataset.table) {
+    const tableId = active.dataset.table;
+    const tableNum = tableId === 'table1' ? 1 : 2;
+    const text = (e.clipboardData || window.clipboardData).getData('text');
+    if (!text) return;
+    const values = parseClipboard(text);
+    if (values.length > 1) {
+      // Multi-cell paste: fill from current row downward
+      e.preventDefault();
+      const inputs = document.querySelectorAll('input[data-table="' + tableId + '"]');
+      const inputArr = Array.from(inputs);
+      const startIdx = inputArr.indexOf(active);
+      const count = Math.min(values.length, 31 - startIdx);
+      for (let i = 0; i < count; i++) {
+        inputArr[startIdx + i].value = values[i];
+      }
+      recalc();
+      showToast('✅ ' + count + ' values pasted / ' + count + ' nilai telah dipaste.');
+    }
+  }
+});
+
+// ── Date formatting (DD/MM/YYYY) ──
+function formatDate(input) {
+  let val = input.value.replace(/[^\d]/g, '');
+  if (val.length > 8) val = val.slice(0, 8);
+  if (val.length > 4) {
+    val = val.slice(0, 2) + '/' + val.slice(2, 4) + '/' + val.slice(4);
+  } else if (val.length > 2) {
+    val = val.slice(0, 2) + '/' + val.slice(2);
+  }
+  input.value = val;
+}
+
+function setToday(inputId) {
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  document.getElementById(inputId).value = dd + '/' + mm + '/' + yyyy;
+}
+
+// ── Clear all data ──
+function clearAll() {
+  if (!confirm('Clear all data? / Padam semua data yang diisi?')) return;
+  document.querySelectorAll('table.data-table input[type="number"]').forEach(i => i.value = '');
+  document.getElementById('date1').value = '';
+  document.getElementById('date2').value = '';
+  recalc();
+  // Clear stored cross-check data
+  lastAddOnTaxTotal = null;
+  lastAddOnTaxRooms = null;
+  lastAddOnTaxMonth = null;
+  document.getElementById('warningPanel').classList.remove('show');
+  document.getElementById('crosscheckPanel').classList.remove('show');
+  document.getElementById('crosscheckPanel').className = 'crosscheck-panel no-print';
+  showToast('🗑️ All data cleared / Semua data telah dipadam.');
+}
+
+// ── Save PDF with dynamic filename ──
+function getFileBaseName() {
+  const sel1 = document.getElementById('bulan1');
+  const sel2 = document.getElementById('bulan2');
+  const m1 = sel1.value !== '' ? BULAN_EN[parseInt(sel1.value)] : '';
+  const m2 = sel2.value !== '' ? BULAN_EN[parseInt(sel2.value)] : '';
+  if (m1 && m2) return 'LGF_' + m1 + '_' + m2;
+  if (m1) return 'LGF_' + m1;
+  if (m2) return 'LGF_' + m2;
+  return 'LGF_Form';
+}
+
+function savePDF() {
+  // Set document.title so browser uses it as default PDF filename
+  const origTitle = document.title;
+  document.title = getFileBaseName();
+  window.print();
+  // Restore after a short delay (print dialog is async)
+  setTimeout(() => { document.title = origTitle; }, 1000);
+}
+
+// ── Export to Excel (.xlsx) — A4-friendly layout matching the form ──
+function exportToExcel() {
+  const wb = XLSX.utils.book_new();
+
+  // Gather form data
+  const sel1 = document.getElementById('bulan1');
+  const sel2 = document.getElementById('bulan2');
+  const month1Name = sel1.value !== '' ? BULAN[parseInt(sel1.value)] : '';
+  const month2Name = sel2.value !== '' ? BULAN[parseInt(sel2.value)] : '';
+  const inputs1 = document.querySelectorAll('input[data-table="table1"]');
+  const inputs2 = document.querySelectorAll('input[data-table="table2"]');
+  const jumlah1 = parseInt(document.getElementById('jumlah1').textContent) || 0;
+  const jumlah2 = parseInt(document.getElementById('jumlah2').textContent) || 0;
+  const totalBilik = parseInt(document.getElementById('totalBilik').textContent) || 0;
+  const totalKutipan = parseInt(document.getElementById('totalKutipan').textContent) || 0;
+  const rate = selectedStar >= 4 ? 3 : 2;
+  const sigNama1 = document.getElementById('sigNama1').value;
+  const sigJawatan1 = document.getElementById('sigJawatan1').value;
+  const sigNama2 = document.getElementById('sigNama2').value;
+  const sigJawatan2 = document.getElementById('sigJawatan2').value;
+  const date1 = document.getElementById('date1').value;
+  const date2 = document.getElementById('date2').value;
+
+  // Build rows for the sheet
+  const rows = [];
+  // Row 0: Borang KT 1 (right-aligned — we'll merge later)
+  rows.push(['', '', '', '', '', 'Borang KT 1']);
+  // Row 1-2: Title
+  rows.push(['', 'Jumlah Kutipan Bulanan Fi Kerajaan Tempatan']);
+  rows.push(['', 'Negeri Pulau Pinang Tahun ' + currentYear]);
+  // Row 3: blank
+  rows.push([]);
+  // Row 4: Hotel info
+  rows.push(['Nama Hotel/Hostel/Rumah Tumpangan :', 'Hotel Neo+ Penang']);
+  rows.push(['Alamat :', '68, Jalan Gurdwara, 10300 Georgetown Penang.']);
+  // Row 6: Star
+  const starText = selectedStar <= 1 ? '1 & ke bawah' : String(selectedStar);
+  rows.push(['Taraf Bintang Hotel :', starText + ' Bintang']);
+  // Row 7: blank
+  rows.push([]);
+  // Row 8: Table headers
+  rows.push(['Bulan: ' + month1Name, '', '', 'Bulan: ' + month2Name, '', '']);
+  rows.push(['Tarikh', 'Bil. Bilik Dijual', '', 'Tarikh', 'Bil. Bilik Dijual', '']);
+
+  // Rows 10-40: Data (days 1-31)
+  for (let d = 0; d < 31; d++) {
+    const v1 = Number(inputs1[d].value) || '';
+    const v2 = Number(inputs2[d].value) || '';
+    rows.push([d + 1, v1, '', d + 1, v2, '']);
+  }
+
+  // Row 41: Jumlah
+  rows.push(['Jumlah', jumlah1, '', 'Jumlah', jumlah2, '']);
+  // Row 42: blank
+  rows.push([]);
+  // Row 43-45: Summary
+  rows.push(['Jumlah Bilik Dijual (2 Bulan)', totalBilik, '', 'Kadar*', 'RM 2/ RM 3']);
+  rows.push(['Jumlah Bilik X Kadar = Jumlah Kutipan (RM)', totalKutipan]);
+  // Row 46: blank
+  rows.push([]);
+  // Row 47: Kadar notes
+  rows.push(['Kadar']);
+  rows.push(['* Hotel bertaraf 3 bintang dan ke bawah kadar RM2 sebilik semalam']);
+  rows.push(['* Hotel bertaraf 4 bintang dan ke atas kadar RM3 sebilik semalam']);
+  rows.push(['(Potong kadar yang tidak berkenaan)']);
+  // Row 51: blank
+  rows.push([]);
+  // Row 52-53: Signatures
+  rows.push(['Disediakan oleh:', '', '', 'Disahkan oleh:']);
+  rows.push(['Nama : ' + sigNama1, '', '', 'Nama : ' + sigNama2]);
+  rows.push(['Jawatan : ' + sigJawatan1, '', '', 'Jawatan : ' + sigJawatan2]);
+  rows.push(['Tarikh : ' + date1, '', '', 'Tarikh : ' + date2]);
+  // Row 56: blank
+  rows.push([]);
+  // Row 57: Contact
+  rows.push(['Nama kakitangan hotel untuk dihubungi :']);
+  rows.push(['No. Telefon : 04-2551000']);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  // Set column widths for A4 fit
+  ws['!cols'] = [
+    { wch: 18 }, // A - Tarikh / labels
+    { wch: 16 }, // B - Bil. Bilik 1
+    { wch: 3 },  // C - spacer
+    { wch: 18 }, // D - Tarikh 2
+    { wch: 16 }, // E - Bil. Bilik 2
+    { wch: 14 }, // F - extra
+  ];
+
+  // Set print area and page setup for A4
+  ws['!printarea'] = 'A1:F' + rows.length;
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Borang KT1');
+
+  // Generate filename
+  const fileName = getFileBaseName() + '.xlsx';
+  XLSX.writeFile(wb, fileName);
+  showToast('✅ Excel exported / Excel telah diexport: ' + fileName);
+}
+
+// ── English month names mapping (for detecting month from Add On Tax Report metadata) ──
+// Store last imported Add On Tax total for DRR cross-check
+let lastAddOnTaxTotal = null;
+let lastAddOnTaxRooms = null;
+let lastAddOnTaxMonth = null;
+
+const MONTH_EN_TO_IDX = {
+  'january': 0, 'february': 1, 'march': 2, 'april': 3, 'may': 4, 'june': 5,
+  'july': 6, 'august': 7, 'september': 8, 'october': 9, 'november': 10, 'december': 11,
+  'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'jun': 5,
+  'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11
+};
+
+// ── Drag & Drop Setup ──
+function setupDropZone(zoneId, targetTable) {
+  const zone = document.getElementById(zoneId);
+  if (!zone) return;
+
+  ['dragenter', 'dragover'].forEach(evt => {
+    zone.addEventListener(evt, function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.add('drag-over');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(evt => {
+    zone.addEventListener(evt, function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.remove('drag-over');
+    });
+  });
+
+  zone.addEventListener('drop', function(e) {
+    const files = e.dataTransfer.files;
+    if (files.length === 0) return;
+    const file = files[0];
+    if (!file.name.match(/\.(xlsx|xls|csv)$/i)) {
+      showToast('⚠️ Sila seret fail Excel (.xlsx) sahaja');
+      return;
+    }
+    processImportFile(file, targetTable);
+  });
+}
+
+// Also allow drag anywhere on the page to default to left table
+document.addEventListener('DOMContentLoaded', function() {
+  setupDropZone('dropZone1', 'table1');
+  setupDropZone('dropZone2', 'table2');
+});
+
+// ── Import Excel — called from toolbar button (auto-detect table) ──
+function importExcel(fileInput) {
+  const file = fileInput.files[0];
+  if (!file) return;
+  processImportFile(file, null); // null = auto-detect which table
+  fileInput.value = '';
+}
+
+// ── Import Excel — called from drop zone or per-table file input ──
+function importExcelToTable(fileInput, targetTable) {
+  const file = fileInput.files[0];
+  if (!file) return;
+  processImportFile(file, targetTable);
+  fileInput.value = '';
+}
+
+// ── Core import logic ──
+function processImportFile(file, forceTargetTable) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array', cellDates: true });
+
+      // Use first sheet
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const allRows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, dateNF: 'yyyy-mm-dd' });
+
+      // Try to detect month/year from metadata rows (first 6 rows before header)
+      // Look for "Revenue Date" row which contains the date range
+      let metaMonth = null;
+      let metaYear = null;
+      for (let r = 0; r < Math.min(allRows.length, 10); r++) {
+        const row = allRows[r];
+        if (!row) continue;
+        const rowText = row.map(c => String(c || '')).join(' ').toLowerCase();
+        // Look for month names in metadata rows
+        if (rowText.includes('revenue date') || rowText.includes('date')) {
+          for (const [name, idx] of Object.entries(MONTH_EN_TO_IDX)) {
+            if (name.length >= 3 && rowText.includes(name)) {
+              metaMonth = idx;
+              // Try to find year near the month name
+              const yearMatch = rowText.match(/\b(20\d{2})\b/);
+              if (yearMatch) metaYear = parseInt(yearMatch[1]);
+              break;
+            }
+          }
+          if (metaMonth !== null) break;
+        }
+      }
+
+      // Find the header row containing "Charge Date"
+      let headerIdx = -1;
+      let chargeDateCol = -1;
+      for (let r = 0; r < Math.min(allRows.length, 20); r++) {
+        const row = allRows[r];
+        if (!row) continue;
+        for (let c = 0; c < row.length; c++) {
+          if (row[c] && String(row[c]).trim().toLowerCase() === 'charge date') {
+            headerIdx = r;
+            chargeDateCol = c;
+            break;
+          }
+        }
+        if (headerIdx >= 0) break;
+      }
+
+      if (headerIdx < 0) {
+        showToast('⚠️ Lajur "Charge Date" tidak ditemui. Adakah ini fail Add On Tax Report?');
+        return;
+      }
+
+      // Also find the "Total Amount" column in the header row
+      let totalAmountCol = -1;
+      // Also find "Name" column for negative value reporting
+      let nameCol = -1;
+      const headerRow = allRows[headerIdx];
+      for (let c = 0; c < headerRow.length; c++) {
+        const colName = String(headerRow[c] || '').trim().toLowerCase();
+        if (colName === 'total amount') totalAmountCol = c;
+        if (colName === 'name') nameCol = c;
+      }
+
+      if (totalAmountCol < 0) {
+        showToast('⚠️ Lajur "Total Amount" tidak ditemui. Adakah ini fail Add On Tax Report?');
+        return;
+      }
+
+      // Sum Total Amount per day from Charge Date column
+      // Formula: SUM(Total Amount) ÷ 2 per day = Bil. Bilik Dijual
+      const dayTotals = {}; // { dayOfMonth: sum of Total Amount }
+      const negativeRows = []; // Track negative values for warnings
+      let detectedMonth = null;
+      let detectedYear = null;
+      let totalRows = 0;
+      let totalAmount = 0;
+
+      for (let r = headerIdx + 1; r < allRows.length; r++) {
+        const row = allRows[r];
+        if (!row || !row[chargeDateCol]) continue;
+
+        const cellVal = row[chargeDateCol];
+        let dateObj = null;
+
+        if (cellVal instanceof Date) {
+          dateObj = cellVal;
+        } else {
+          const str = String(cellVal).trim();
+          if (str.toLowerCase().includes('total') || str.toLowerCase().includes('currency')) break;
+          dateObj = new Date(str);
+        }
+
+        if (!dateObj || isNaN(dateObj.getTime())) continue;
+
+        const day = dateObj.getDate();
+        const month = dateObj.getMonth();
+        const year = dateObj.getFullYear();
+
+        if (detectedMonth === null) {
+          detectedMonth = month;
+          detectedYear = year;
+        }
+
+        // Get the Total Amount value for this row
+        const amtVal = row[totalAmountCol];
+        const amt = parseFloat(String(amtVal).replace(/[^0-9.\-]/g, '')) || 0;
+
+        // Detect negative values (contra / reversal entries)
+        if (amt < 0) {
+          const guestName = nameCol >= 0 ? String(row[nameCol] || '').trim() : 'Unknown';
+          negativeRows.push({
+            row: r + 1, // 1-indexed for display
+            date: day + ' ' + BULAN[month],
+            name: guestName,
+            amount: amt
+          });
+        }
+
+        dayTotals[day] = (dayTotals[day] || 0) + amt;
+        totalAmount += amt;
+        totalRows++;
+      }
+
+      if (totalRows === 0) {
+        showToast('⚠️ Tiada data tarikh yang sah ditemui.');
+        return;
+      }
+
+      // Use metadata month if available, fall back to first data row's month
+      if (metaMonth !== null) detectedMonth = metaMonth;
+      if (metaYear !== null) detectedYear = metaYear;
+
+      // Convert Total Amount sums to room counts: SUM ÷ 2 per day
+      const dayCounts = {};
+      let totalRooms = 0;
+      for (const day in dayTotals) {
+        dayCounts[day] = Math.round(dayTotals[day] / 2);
+        totalRooms += dayCounts[day];
+      }
+
+      // Determine target table
+      let targetTable = forceTargetTable;
+      let targetSel = null;
+
+      if (targetTable) {
+        // Forced by drag-and-drop or per-table input
+        targetSel = document.getElementById(targetTable === 'table1' ? 'bulan1' : 'bulan2');
+      } else {
+        // Auto-detect: prefer left table first
+        const sel1 = document.getElementById('bulan1');
+        const sel2 = document.getElementById('bulan2');
+
+        if (sel1.value === '' || parseInt(sel1.value) === detectedMonth) {
+          targetTable = 'table1';
+          targetSel = sel1;
+        } else if (sel2.value === '' || parseInt(sel2.value) === detectedMonth) {
+          targetTable = 'table2';
+          targetSel = sel2;
+        } else {
+          const leftMonth = BULAN[parseInt(sel1.value)];
+          const rightMonth = BULAN[parseInt(sel2.value)];
+          const dataMonth = BULAN[detectedMonth];
+          if (confirm('Data untuk ' + dataMonth + ' tetapi jadual kiri = ' + leftMonth + ', jadual kanan = ' + rightMonth + '.\n\nGanti jadual kiri (' + leftMonth + ')?')) {
+            targetTable = 'table1';
+            targetSel = sel1;
+          } else {
+            return;
+          }
+        }
+      }
+
+      if (!targetSel) {
+        targetSel = document.getElementById(targetTable === 'table1' ? 'bulan1' : 'bulan2');
+      }
+
+      // Set the month dropdown
+      targetSel.value = detectedMonth;
+
+      // Set the year if detected
+      if (detectedYear) {
+        document.getElementById('yearDisplay').textContent = detectedYear;
+      }
+
+      // Fill the daily room counts
+      const inputs = document.querySelectorAll('input[data-table="' + targetTable + '"]');
+      let filledDays = 0;
+      for (let d = 1; d <= 31; d++) {
+        const count = dayCounts[d] || 0;
+        inputs[d - 1].value = count > 0 ? count : '';
+        if (count > 0) filledDays++;
+      }
+
+      recalc();
+
+      // Store totals for DRR cross-check
+      lastAddOnTaxTotal = totalAmount;
+      lastAddOnTaxRooms = totalRooms;
+      lastAddOnTaxMonth = detectedMonth;
+
+      // Show negative value warnings if any
+      showNegativeWarnings(negativeRows, totalAmount, totalRooms);
+
+      const monthName = BULAN[detectedMonth];
+      const tableSide = targetTable === 'table1' ? 'kiri' : 'kanan';
+      let toastMsg = '✅ ' + totalRows + ' rekod diimport → ' + totalRooms + ' bilik / ' + filledDays + ' hari (' + monthName + ') ke jadual ' + tableSide;
+      if (negativeRows.length > 0) {
+        toastMsg += ' | ⚠️ ' + negativeRows.length + ' nilai negatif dikesan!';
+      }
+      showToast(toastMsg);
+
+    } catch (err) {
+      console.error('Import error:', err);
+      showToast('⚠️ Ralat membaca fail: ' + err.message);
+    }
+  };
+
+  reader.readAsArrayBuffer(file);
+}
+
+// ── Show warnings for negative Total Amount values ──
+function showNegativeWarnings(negativeRows, totalAmount, totalRooms) {
+  const panel = document.getElementById('warningPanel');
+  const list = document.getElementById('warningList');
+  const summary = document.getElementById('warningSummary');
+
+  if (negativeRows.length === 0) {
+    panel.classList.remove('show');
+    return;
+  }
+
+  list.innerHTML = '';
+  negativeRows.forEach(function(item) {
+    const li = document.createElement('li');
+    li.textContent = 'Baris ' + item.row + ' — ' + item.date + ' — ' + item.name + ' — RM ' + item.amount.toFixed(2) + ' (contra/reversal)';
+    list.appendChild(li);
+  });
+
+  const negTotal = negativeRows.reduce(function(s, r) { return s + r.amount; }, 0);
+  summary.textContent = 'Jumlah nilai negatif: RM ' + negTotal.toFixed(2) + ' (' + Math.abs(negTotal / 2) + ' bilik ditolak). Jumlah akhir: RM ' + totalAmount.toFixed(2) + ' = ' + totalRooms + ' bilik.';
+
+  panel.classList.add('show');
+}
+
+// ── Help popup toggle ──
+function toggleHelp() {
+  document.getElementById('helpOverlay').classList.toggle('show');
+}
+
+// ── DRR Import & Cross-Check ──
+function importDRR(fileInput) {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  if (lastAddOnTaxTotal === null) {
+    showToast('⚠️ Sila import Add On Tax Report dahulu sebelum cross-check DRR.');
+    fileInput.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array' });
+
+      // Look for "Macro DRR" sheet (has actual values, not formulas)
+      let targetSheet = null;
+      for (const name of wb.SheetNames) {
+        if (name.toLowerCase().includes('macro drr') || name.toLowerCase() === 'macro drr') {
+          targetSheet = name;
+          break;
+        }
+      }
+
+      // Fallback to "DRR" sheet if Macro DRR not found
+      if (!targetSheet) {
+        for (const name of wb.SheetNames) {
+          if (name.toLowerCase() === 'drr') {
+            targetSheet = name;
+            break;
+          }
+        }
+      }
+
+      if (!targetSheet) {
+        showToast('⚠️ Sheet "Macro DRR" atau "DRR" tidak ditemui. Adakah ini fail DRR?');
+        fileInput.value = '';
+        return;
+      }
+
+      const ws = wb.Sheets[targetSheet];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true });
+
+      // Find "Local Govt Fee" row — description is at col index 2
+      let drrLGFValue = null;
+      for (let r = 0; r < rows.length; r++) {
+        const row = rows[r];
+        if (!row) continue;
+        const desc = String(row[2] || '').trim().toLowerCase();
+        if (desc.includes('local govt fee') || desc.includes('local government fee')) {
+          // MTD value is at col index 8
+          drrLGFValue = parseFloat(row[8]) || 0;
+          break;
+        }
+      }
+
+      if (drrLGFValue === null) {
+        showToast('⚠️ Baris "Local Govt Fee" tidak ditemui dalam sheet ' + targetSheet);
+        fileInput.value = '';
+        return;
+      }
+
+      // Cross-check: DRR Local Govt Fee MTD vs Add On Tax SUM(Total Amount)
+      showCrosscheckResult(drrLGFValue, lastAddOnTaxTotal, lastAddOnTaxRooms);
+
+    } catch (err) {
+      console.error('DRR import error:', err);
+      showToast('⚠️ Ralat membaca fail DRR: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+  fileInput.value = '';
+}
+
+function showCrosscheckResult(drrValue, addOnTaxTotal, addOnTaxRooms) {
+  const panel = document.getElementById('crosscheckPanel');
+  const title = document.getElementById('ccTitle');
+  const detail = document.getElementById('ccDetail');
+
+  const diff = Math.abs(drrValue - addOnTaxTotal);
+  const isMatch = diff < 0.01; // floating point tolerance
+
+  if (isMatch) {
+    panel.className = 'crosscheck-panel no-print show match';
+    title.textContent = '✅ Cross-Check Berjaya — Jumlah Sepadan!';
+    detail.innerHTML =
+      'DRR Local Govt Fee (MTD): <strong>RM ' + drrValue.toFixed(2) + '</strong><br>' +
+      'Add On Tax Jumlah: <strong>RM ' + addOnTaxTotal.toFixed(2) + '</strong><br>' +
+      'Bilik Dijual: <strong>' + addOnTaxRooms + '</strong> bilik<br>' +
+      '<span style="color:#2e7d32;">Kedua-dua laporan sepadan. Data adalah betul.</span>';
+  } else {
+    const diffRooms = Math.round(diff / 2);
+    panel.className = 'crosscheck-panel no-print show mismatch';
+    title.textContent = '❌ Cross-Check Gagal — Jumlah Tidak Sepadan!';
+    detail.innerHTML =
+      'DRR Local Govt Fee (MTD): <strong>RM ' + drrValue.toFixed(2) + '</strong><br>' +
+      'Add On Tax Jumlah: <strong>RM ' + addOnTaxTotal.toFixed(2) + '</strong><br>' +
+      'Perbezaan: <strong>RM ' + diff.toFixed(2) + '</strong> (' + diffRooms + ' bilik)<br>' +
+      '<span style="color:#c62828;">Sila semak entri contra/reversal dalam Add On Tax Report. ' +
+      (drrValue > addOnTaxTotal
+        ? 'Add On Tax kurang RM ' + diff.toFixed(2) + ' — mungkin ada entri yang hilang.'
+        : 'Add On Tax lebih RM ' + diff.toFixed(2) + ' — mungkin ada entri negatif/contra tambahan.') +
+      '</span>';
+  }
+}
+
+// ── Toast notification ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+</body>
+</html>
